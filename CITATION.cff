@@ -11,7 +11,7 @@ authors:
     affiliation: "Hanoi University of Science and Technology"
     orcid: "https://orcid.org/0009-0008-2208-4555"
 repository-code: "https://github.com/tiggre2225/fast-radar-polar-fan"
-doi: 10.5281/zenodo.23399759
+doi: 10.5281/zenodo.23399618
 preferred-citation:
   type: article
   title: "A Note on Fast Georeferencing of Polar Radar Fans with Shared Range Weights"
