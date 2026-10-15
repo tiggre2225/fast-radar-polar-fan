@@ -1,7 +1,7 @@
 # fast-radar-polar-fan
 
 > **A Note on Fast Georeferencing of Polar Radar Fans with Shared Range Weights**  
-> Hoang Bach Nguyen — arXiv:[TODO] — 10.5281/zenodo.23399006
+> Hoang Bach Nguyen — arXiv:[TODO] — [TODO pending first GitHub release]
 
 ## Quick start
 
