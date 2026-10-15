@@ -3,20 +3,23 @@ message: "Cite plz"
 title: "fast-radar-polar-fan: code, tests and benchmark for fast georeferencing of polar radar fans"
 type: software
 version: 1.0.0
-date-released: "2026-10-15"
+date-released: 2026-10-15
 license: MIT
 authors:
   - family-names: "Nguyen"
     given-names: "Hoang Bach"
     affiliation: "Hanoi University of Science and Technology"
+    orcid: "https://orcid.org/0009-0008-2208-4555"
 repository-code: "https://github.com/tiggre2225/fast-radar-polar-fan"
-doi: "TODO"
+doi: 10.5281/zenodo.23399759
 preferred-citation:
   type: article
   title: "A Note on Fast Georeferencing of Polar Radar Fans with Shared Range Weights"
   authors:
     - family-names: "Nguyen"
       given-names: "Hoang Bach"
+      affiliation: "Hanoi University of Science and Technology"
+      orcid: "https://orcid.org/0009-0008-2208-4555"
   year: 2026
   # journal: "arXiv preprint"
   # notes: "arXiv:TODO"                 # TODO: arXiv identifier
