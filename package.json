@@ -1,0 +1,11 @@
+{
+  "name": "fast-radar-polar-fan",
+  "version": "0.1.0",
+  "description": "Fast georeferencing of polar radar fans with shared range weights: reference implementation, tests, benchmark and analysis scripts.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test"
+  }
+}

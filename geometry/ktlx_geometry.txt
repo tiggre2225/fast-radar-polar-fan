@@ -1,0 +1,214 @@
+## You are using the Python ARM Radar Toolkit (Py-ART), an open source
+## library for working with weather radar data. Py-ART is partly supported
+## by the U.S. Department of Energy Office of Science as part of
+## the Atmospheric Radiation Measurement (ARM) User Facility.
+##
+## If you use this software to prepare a publication, please cite:
+##
+##     JJ Helmus and SM Collis, JORS 2016, doi: 10.5334/jors.119
+
+==============================================================================
+Volume header: {'tape': 'AR2V0006.', 'extension': '220', 'date': 20728, 'time': 14543910, 'icao': 'KTLX'}
+Sweeps: 21
+------------------------------------------------------------------------------
+Sweep 0  elevation #1  mean elevation 0.49 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.409  median 0.489  max 0.577  outliers(>0.1 deg off median): 0
+  REF ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+------------------------------------------------------------------------------
+Sweep 1  elevation #2  mean elevation 0.48 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.459  median 0.500  max 0.538  outliers(>0.1 deg off median): 0
+  REF ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+------------------------------------------------------------------------------
+Sweep 2  elevation #3  mean elevation 0.86 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.431  median 0.489  max 0.580  outliers(>0.1 deg off median): 0
+  REF ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+------------------------------------------------------------------------------
+Sweep 3  elevation #4  mean elevation 0.88 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.464  median 0.500  max 0.549  outliers(>0.1 deg off median): 0
+  REF ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+------------------------------------------------------------------------------
+Sweep 4  elevation #5  mean elevation 1.20 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.412  median 0.492  max 0.580  outliers(>0.1 deg off median): 0
+  REF ngates= 1712 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 430.000 km = 232.18 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1712 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 430.000 km = 232.18 nmi
+------------------------------------------------------------------------------
+Sweep 5  elevation #6  mean elevation 1.23 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.461  median 0.500  max 0.538  outliers(>0.1 deg off median): 0
+  REF ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+------------------------------------------------------------------------------
+Sweep 6  elevation #7  mean elevation 0.49 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.412  median 0.489  max 0.577  outliers(>0.1 deg off median): 0
+  REF ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+------------------------------------------------------------------------------
+Sweep 7  elevation #8  mean elevation 0.48 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.461  median 0.500  max 0.538  outliers(>0.1 deg off median): 0
+  REF ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+------------------------------------------------------------------------------
+Sweep 8  elevation #9  mean elevation 1.84 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.016  outliers(>0.1 deg off median): 0
+  REF ngates= 1536 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 386.000 km = 208.42 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1536 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 386.000 km = 208.42 nmi
+------------------------------------------------------------------------------
+Sweep 9  elevation #10  mean elevation 2.45 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.970  median 1.000  max 1.027  outliers(>0.1 deg off median): 0
+  REF ngates= 1336 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 336.000 km = 181.43 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1336 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 336.000 km = 181.43 nmi
+------------------------------------------------------------------------------
+Sweep 10  elevation #11  mean elevation 3.11 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.035  outliers(>0.1 deg off median): 0
+  REF ngates= 1168 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 294.000 km = 158.75 nmi
+  VEL ngates= 1172 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 295.000 km = 159.29 nmi
+  SW  ngates= 1172 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 295.000 km = 159.29 nmi
+  ZDR ngates= 1172 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 295.000 km = 159.29 nmi
+  PHI ngates= 1172 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 295.000 km = 159.29 nmi
+  RHO ngates= 1172 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 295.000 km = 159.29 nmi
+  CFP ngates= 1168 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 294.000 km = 158.75 nmi
+------------------------------------------------------------------------------
+Sweep 11  elevation #12  mean elevation 4.00 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.964  median 1.000  max 1.035  outliers(>0.1 deg off median): 0
+  REF ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  VEL ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  SW  ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  ZDR ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  PHI ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  RHO ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+  CFP ngates=  984 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 248.000 km = 133.91 nmi
+------------------------------------------------------------------------------
+Sweep 12  elevation #13  mean elevation 5.09 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.024  outliers(>0.1 deg off median): 0
+  REF ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  VEL ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  SW  ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  ZDR ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  PHI ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  RHO ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+  CFP ngates=  820 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 207.000 km = 111.77 nmi
+------------------------------------------------------------------------------
+Sweep 13  elevation #14  mean elevation 6.45 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.033  outliers(>0.1 deg off median): 0
+  REF ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  VEL ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  SW  ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  ZDR ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  PHI ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  RHO ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+  CFP ngates=  680 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 172.000 km = 92.87 nmi
+------------------------------------------------------------------------------
+Sweep 14  elevation #15  mean elevation 0.49 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.417  median 0.489  max 0.574  outliers(>0.1 deg off median): 0
+  REF ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+  ZDR ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  PHI ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  RHO ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  CFP ngates= 1832 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 460.000 km = 248.38 nmi
+------------------------------------------------------------------------------
+Sweep 15  elevation #16  mean elevation 0.48 deg  radials 720
+  azimuth_resolution codes seen: [1] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.461  median 0.500  max 0.538  outliers(>0.1 deg off median): 0
+  REF ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  VEL ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+  SW  ngates= 1192 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 300.000 km = 161.99 nmi
+------------------------------------------------------------------------------
+Sweep 16  elevation #17  mean elevation 7.94 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.030  outliers(>0.1 deg off median): 0
+  REF ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  VEL ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  SW  ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  ZDR ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  PHI ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  RHO ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+  CFP ngates=  540 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 137.000 km = 73.97 nmi
+------------------------------------------------------------------------------
+Sweep 17  elevation #18  mean elevation 10.06 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.972  median 1.000  max 1.024  outliers(>0.1 deg off median): 0
+  REF ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  VEL ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  SW  ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  ZDR ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  PHI ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  RHO ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+  CFP ngates=  456 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 116.000 km = 62.63 nmi
+------------------------------------------------------------------------------
+Sweep 18  elevation #19  mean elevation 12.43 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.975  median 1.000  max 1.022  outliers(>0.1 deg off median): 0
+  REF ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  VEL ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  SW  ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  ZDR ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  PHI ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  RHO ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+  CFP ngates=  368 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 94.000 km = 50.76 nmi
+------------------------------------------------------------------------------
+Sweep 19  elevation #20  mean elevation 15.55 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.978  median 1.000  max 1.030  outliers(>0.1 deg off median): 0
+  REF ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  VEL ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  SW  ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  ZDR ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  PHI ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  RHO ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+  CFP ngates=  296 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 76.000 km = 41.04 nmi
+------------------------------------------------------------------------------
+Sweep 20  elevation #21  mean elevation 19.46 deg  radials 360
+  azimuth_resolution codes seen: [2] (1 = 0.5 deg, 2 = 1.0 deg; commanded value)
+  actual spacing deg: min 0.964  median 1.000  max 1.024  outliers(>0.1 deg off median): 0
+  REF ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  VEL ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  SW  ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  ZDR ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  PHI ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  RHO ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+  CFP ngates=  240 first_gate=  2125 gate_spacing=  250  same in all radials: True  far edge 62.000 km = 33.48 nmi
+==============================================================================

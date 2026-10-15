@@ -1,0 +1,1 @@
+24e815611b2e7045901a18c41d7a460686b0146495b91774d0565a604fcd1700  benchmark.html (SHA-256 of the text of the <script id="bench-script"> element, as read by the browser)

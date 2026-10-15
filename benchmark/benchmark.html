@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXRAD Algorithm Benchmark</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+        }
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .controls {
+            background: #1a1f3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .control-group {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        select, input {
+            background: #0a0e27;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background: #4fc3f7;
+            color: #0a0e27;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #29b6f6; }
+        button:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #4fc3f7;
+        }
+        .results {
+            background: #1a1f3a;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .results.visible { display: block; }
+        .results h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #4fc3f7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        th {
+            background: #0a0e27;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        td { font-size: 14px; }
+        .approach-name { font-weight: 600; }
+        .annotate { color: #888; font-size: 12px; }
+        .speedup {
+            font-weight: 600;
+            color: #66bb6a;
+        }
+        .speedup.baseline { color: #888; }
+        .log-section {
+            background: #1a1f3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .log-section.visible { display: block; }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .log-header h2 {
+            font-size: 20px;
+            color: #4fc3f7;
+            margin: 0;
+        }
+        .export-buttons button {
+            background: #333;
+            color: #e0e0e0;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .export-buttons button:hover { background: #444; }
+        .log-content {
+            background: #0a0e27;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1>NEXRAD Polar Mesh Algorithm Benchmark</h1>
+  <div class="subtitle">Legacy (15 trig/pt) · Optimized destination formula (4 trig/pt) · Vector fan (2 trig/pt)</div>
+  <div class="controls">
+    <div class="control-group"><label>Device label (free text)</label><input type="text" id="deviceLabel" placeholder="e.g. desktop i9-9880H, plugged in"></div>
+    <div class="control-group"><label>Profile</label>
+      <select id="profile"><option value="superRes" selected>Super-res (720×1832)</option><option value="standard">Standard (360×920)</option></select></div>
+    <div class="control-group"><label>Warm-up rounds</label><input type="number" id="warmup" value="5" min="0" max="50"></div>
+    <div class="control-group"><label>Measured rounds</label><input type="number" id="measured" value="60" min="1" max="500"></div>
+    <button id="runBtn" onclick="runBenchmark()">Run Benchmark</button>
+    <div class="status" id="status"></div>
+  </div>
+  <div class="results" id="results">
+    <h2 id="resultsTitle"></h2>
+    <table><thead><tr><th>Approach</th><th>End-to-end</th><th>Kernel only</th><th>Speedup e2e</th><th>Speedup kernel</th></tr></thead><tbody id="resultsBody"></tbody></table>
+    <div class="annotate" id="assemblyNote" style="margin-top:10px"></div>
+  </div>
+  <div class="log-section" id="logSection">
+    <div class="log-header"><h2>Results</h2>
+      <div class="export-buttons"><button onclick="copyLog()">Copy to Clipboard</button><button onclick="downloadLog()">Download as Text</button><button onclick="downloadJSON()">Download raw JSON</button></div></div>
+    <div class="log-content" id="logContent"></div>
+  </div>
+</div>
+<script id="bench-script">
+
+// Constants
+const EARTH_RADIUS = 6371008.8;
+const PI = Math.PI;
+const DEG_TO_RAD = PI / 180;
+const RAD_TO_DEG = 180 / PI;
+const R_GLOBE = 8192 / PI / 2;
+const INV_2PI = 1 / (2 * PI);
+
+// Quad assembly (shared by all approaches)
+function assembleQuads(numAzimuths, numRanges, limitAz, data, mercXY, ecefXYZ, startTm) {
+    const maxCells = limitAz * (numRanges - 1);
+    const mercatorPoints = new Float32Array(maxCells * 4 * 2);
+    const ecefPoints = new Float32Array(maxCells * 4 * 3);
+    const indices = new Uint32Array(maxCells * 6);
+    const dataVals = new Float32Array(maxCells * 4);
+    let mI = 0, eI = 0, xI = 0, dI = 0, vB = 0;
+    for (let j = 0; j < limitAz; j++) {
+        const row = data[j];
+        if (!row) continue;
+        const lim = Math.min(row.length, numRanges - 1);
+        const r0 = j * numRanges, r1 = (j + 1) * numRanges;
+        for (let i = 0; i < lim; i++) {
+            const val = row[i];
+            if (val == null) continue;
+            const v0 = r0 + i, v1 = r0 + i + 1, v2 = r1 + i, v3 = r1 + i + 1;
+            const a = v0*2, b = v1*2, c = v2*2, d = v3*2;
+            mercatorPoints[mI++]=mercXY[a]; mercatorPoints[mI++]=mercXY[a+1];
+            mercatorPoints[mI++]=mercXY[b]; mercatorPoints[mI++]=mercXY[b+1];
+            mercatorPoints[mI++]=mercXY[c]; mercatorPoints[mI++]=mercXY[c+1];
+            mercatorPoints[mI++]=mercXY[d]; mercatorPoints[mI++]=mercXY[d+1];
+            const a3 = v0*3, b3 = v1*3, c3 = v2*3, d3 = v3*3;
+            ecefPoints[eI++]=ecefXYZ[a3]; ecefPoints[eI++]=ecefXYZ[a3+1]; ecefPoints[eI++]=ecefXYZ[a3+2];
+            ecefPoints[eI++]=ecefXYZ[b3]; ecefPoints[eI++]=ecefXYZ[b3+1]; ecefPoints[eI++]=ecefXYZ[b3+2];
+            ecefPoints[eI++]=ecefXYZ[c3]; ecefPoints[eI++]=ecefXYZ[c3+1]; ecefPoints[eI++]=ecefXYZ[c3+2];
+            ecefPoints[eI++]=ecefXYZ[d3]; ecefPoints[eI++]=ecefXYZ[d3+1]; ecefPoints[eI++]=ecefXYZ[d3+2];
+            indices[xI++]=vB; indices[xI++]=vB+1; indices[xI++]=vB+2;
+            indices[xI++]=vB+2; indices[xI++]=vB+1; indices[xI++]=vB+3;
+            dataVals[dI++]=val; dataVals[dI++]=val; dataVals[dI++]=val; dataVals[dI++]=val;
+            vB += 4;
+        }
+    }
+    return {
+        mercatorPoints: mercatorPoints.subarray(0, mI),
+        ecefPoints: ecefPoints.subarray(0, eI),
+        indices: indices.subarray(0, xI),
+        dataVals: dataVals.subarray(0, dI),
+        pointCount: vB,
+        processingTimeMs: performance.now() - startTm,
+    };
+}
+
+// Approach 1: Legacy per-vertex destination formula (15 trig/pt)
+function kernel_Legacy(inputData) {
+    const { azimuths, ranges, data, radarLat, radarLng } = inputData;
+    const numRanges = ranges.numRanges;
+    const numAzimuths = azimuths.length;
+    const limitAz = Math.min(data.length, numAzimuths - 1);
+    const gridSize = numAzimuths * numRanges;
+    const mercXY = new Float32Array(gridSize * 2);
+    const ecefXYZ = new Float32Array(gridSize * 3);
+    for (let j = 0; j < numAzimuths; j++) {
+        let bearingDeg = azimuths[j];
+        if (bearingDeg < 0) bearingDeg += 360;
+        const baseIdx = j * numRanges;
+        for (let i = 0; i < numRanges; i++) {
+            const distanceM = (ranges.firstRange + i * ranges.step) * 1000;
+            const lat1Rad = radarLat * DEG_TO_RAD;
+            const lon1Rad = radarLng * DEG_TO_RAD;
+            const bearingRad = bearingDeg * DEG_TO_RAD;
+            const sinLat1 = Math.sin(lat1Rad);
+            const cosLat1 = Math.cos(lat1Rad);
+            const sinBearing = Math.sin(bearingRad);
+            const cosBearing = Math.cos(bearingRad);
+            const dr = distanceM / EARTH_RADIUS;
+            const sinDr = Math.sin(dr);
+            const cosDr = Math.cos(dr);
+            const sinLat2_d = sinLat1*cosDr + cosLat1*sinDr*cosBearing;
+            const lat2 = Math.asin(sinLat2_d);
+            const lon2 = lon1Rad + Math.atan2(sinBearing * sinDr * cosLat1, cosDr - sinLat1 * Math.sin(lat2));
+            const latDeg = lat2 * RAD_TO_DEG;
+            const lonDeg = lon2 * RAD_TO_DEG;
+            const idx = baseIdx + i;
+            const i2 = idx * 2, i3 = idx * 3;
+            mercXY[i2] = (180 + lonDeg) / 360;
+            mercXY[i2+1] = (180 - (180/PI * Math.log(Math.tan(PI/4 + latDeg * PI/360)))) / 360;
+            const latR = latDeg * DEG_TO_RAD;
+            const lonR = lonDeg * DEG_TO_RAD;
+            const cosLatE = Math.cos(latR);
+            const sinLatE = Math.sin(latR);
+            const sinLonE = Math.sin(lonR);
+            const cosLonE = Math.cos(lonR);
+            ecefXYZ[i3] = cosLatE * sinLonE * R_GLOBE;
+            ecefXYZ[i3+1] = -sinLatE * R_GLOBE;
+            ecefXYZ[i3+2] = cosLatE * cosLonE * R_GLOBE;
+        }
+    }
+    return { numAzimuths, numRanges, limitAz, data, mercXY, ecefXYZ };
+}
+
+function calcVertexMapCoords_Legacy(inputData) {
+    const startTm = performance.now();
+    const k = kernel_Legacy(inputData);
+    return assembleQuads(k.numAzimuths, k.numRanges, k.limitAz, k.data, k.mercXY, k.ecefXYZ, startTm);
+}
+
+// Approach 2: Optimized destination formula (4 trig/pt)
+// The standard spherical destination formula with every hoist we know of: radar terms once per scan,
+// sin/cos of the azimuth once per radial, sin/cos of the range once per gate (array-indexed table, direct
+// evaluation), the latitude taken from sin(lat2) without asin or a second sine, and the Mercator ordinate
+// from sin(lat2) by the atanh identity. Per point: atan2, log, sin and cos of the new longitude.
+function kernel_Optimized(inputData) {
+    const { azimuths, ranges, data, radarLat, radarLng } = inputData;
+    const numRanges = ranges.numRanges;
+    const numAzimuths = azimuths.length;
+    const limitAz = Math.min(data.length, numAzimuths - 1);
+    const lat1Rad = radarLat * DEG_TO_RAD;
+    const lon1Rad = radarLng * DEG_TO_RAD;
+    const sinLat1 = Math.sin(lat1Rad);
+    const cosLat1 = Math.cos(lat1Rad);
+    const sinR = new Float64Array(numRanges);
+    const cosR = new Float64Array(numRanges);
+    for (let i = 0; i < numRanges; i++) {
+        const dR = (ranges.firstRange + i * ranges.step) * 1000 / EARTH_RADIUS;
+        sinR[i] = Math.sin(dR);
+        cosR[i] = Math.cos(dR);
+    }
+    const gridSize = numAzimuths * numRanges;
+    const mercXY = new Float32Array(gridSize * 2);
+    const ecefXYZ = new Float32Array(gridSize * 3);
+    for (let j = 0; j < numAzimuths; j++) {
+        let alpha = azimuths[j];
+        if (alpha < 0) alpha += 360;
+        const alphaRad = alpha * DEG_TO_RAD;
+        const sinAz = Math.sin(alphaRad);
+        const cosAz = Math.cos(alphaRad);
+        const kCos = cosLat1 * cosAz;
+        const kSin = sinAz * cosLat1;
+        const baseIdx = j * numRanges;
+        for (let i = 0; i < numRanges; i++) {
+            const s = sinR[i], c = cosR[i];
+            const sinLat2 = sinLat1 * c + kCos * s;
+            const lon2 = lon1Rad + Math.atan2(kSin * s, c - sinLat1 * sinLat2);
+            const idx = baseIdx + i;
+            const i2 = idx * 2, i3 = idx * 3;
+            mercXY[i2] = (lon2 + PI) * INV_2PI;
+            mercXY[i2+1] = (PI - 0.5*Math.log((1+sinLat2)/(1-sinLat2))) * INV_2PI;
+            const cosLat = Math.sqrt(1 - sinLat2 * sinLat2);
+            const sinLon = Math.sin(lon2);
+            const cosLon = Math.cos(lon2);
+            ecefXYZ[i3] = cosLat * sinLon * R_GLOBE;
+            ecefXYZ[i3+1] = -sinLat2 * R_GLOBE;
+            ecefXYZ[i3+2] = cosLat * cosLon * R_GLOBE;
+        }
+    }
+    return { numAzimuths, numRanges, limitAz, data, mercXY, ecefXYZ };
+}
+
+function calcVertexMapCoords_Optimized(inputData) {
+    const startTm = performance.now();
+    const k = kernel_Optimized(inputData);
+    return assembleQuads(k.numAzimuths, k.numRanges, k.limitAz, k.data, k.mercXY, k.ecefXYZ, startTm);
+}
+
+// Approach 3: Vector fan with shared range weights (2 trig/pt)
+function kernel_Vector(inputData) {
+    const { azimuths, ranges, data, radarLat, radarLng } = inputData;
+    const numRanges = ranges.numRanges;
+    const numAzimuths = azimuths.length;
+    const limitAz = Math.min(data.length, numAzimuths - 1);
+    const phi0 = radarLat * DEG_TO_RAD;
+    const lambda0 = radarLng * DEG_TO_RAD;
+    const s_phi0 = Math.sin(phi0), c_phi0 = Math.cos(phi0);
+    const s_lam0 = Math.sin(lambda0), c_lam0 = Math.cos(lambda0);
+    const p0x = c_phi0*c_lam0, p0y = c_phi0*s_lam0, p0z = s_phi0;
+    const nx = -s_phi0*c_lam0, ny = -s_phi0*s_lam0, nz = c_phi0;
+    const ex = -s_lam0, ey = c_lam0;
+    const c_i_arr = new Float64Array(numRanges);
+    const s_i_arr = new Float64Array(numRanges);
+    const dStep = ranges.step * 1000 / EARTH_RADIUS;
+    const c_dStep = Math.cos(dStep), s_dStep = Math.sin(dStep);
+    const d0 = ranges.firstRange * 1000 / EARTH_RADIUS;
+    c_i_arr[0] = Math.cos(d0); s_i_arr[0] = Math.sin(d0);
+    for (let i = 1; i < numRanges; i++) {
+        c_i_arr[i] = c_i_arr[i-1]*c_dStep - s_i_arr[i-1]*s_dStep;
+        s_i_arr[i] = s_i_arr[i-1]*c_dStep + c_i_arr[i-1]*s_dStep;
+    }
+    const gridSize = numAzimuths * numRanges;
+    const mercXY = new Float32Array(gridSize * 2);
+    const ecefXYZ = new Float32Array(gridSize * 3);
+    for (let j = 0; j < numAzimuths; j++) {
+        let alpha = azimuths[j]; if (alpha < 0) alpha += 360; alpha *= DEG_TO_RAD;
+        const s_a = Math.sin(alpha), c_a = Math.cos(alpha);
+        const djx = c_a*nx + s_a*ex, djy = c_a*ny + s_a*ey, djz = c_a*nz;
+        const baseIdx = j * numRanges;
+        for (let i = 0; i < numRanges; i++) {
+            const ci = c_i_arr[i], si = s_i_arr[i];
+            const px = ci*p0x + si*djx, py = ci*p0y + si*djy, pz = ci*p0z + si*djz;
+            const idx = baseIdx + i, i2 = idx*2, i3 = idx*3;
+            mercXY[i2] = (Math.atan2(py, px) + PI) * INV_2PI;
+            mercXY[i2+1] = (PI - 0.5*Math.log((1+pz)/(1-pz))) * INV_2PI;
+            ecefXYZ[i3] = R_GLOBE*py;
+            ecefXYZ[i3+1]= -R_GLOBE*pz;
+            ecefXYZ[i3+2]= R_GLOBE*px;
+        }
+    }
+    return { numAzimuths, numRanges, limitAz, data, mercXY, ecefXYZ };
+}
+
+function calcVertexMapCoords_Vector(inputData) {
+    const startTm = performance.now();
+    const k = kernel_Vector(inputData);
+    return assembleQuads(k.numAzimuths, k.numRanges, k.limitAz, k.data, k.mercXY, k.ecefXYZ, startTm);
+}
+
+function stats(arr) {
+    const n = arr.length;
+    const mean = arr.reduce((a,b)=>a+b, 0) / n;
+    const sorted = arr.slice().sort((a,b)=>a-b);
+    const median = n%2 ? sorted[(n-1)/2] : (sorted[n/2-1] + sorted[n/2])/2;
+    const variance = arr.reduce((s,x) => s + (x-mean)**2, 0) / Math.max(1, n-1);
+    return { mean, median, min: sorted[0], max: sorted[n-1], stdev: Math.sqrt(variance) };
+}
+
+function makePrng(seed) {
+    let s = seed >>> 0;
+    return () => {
+        s = (s + 0x6D2B79F5) >>> 0;
+        let t = Math.imul(s ^ s>>>15, 1 | s);
+        t = Math.imul(t ^ t>>>7, 61 | t) ^ t;
+        return ((t ^ t>>>14) >>> 0) / 0x100000000;
+    };
+}
+
+function genFull(numAz, numRanges, rng) {
+    const data = [];
+    for (let j = 0; j < numAz; j++) {
+        const row = new Array(numRanges);
+        for (let i = 0; i < numRanges; i++) row[i] = rng() * 55 + 5;
+        data.push(row);
+    }
+    return data;
+}
+
+function buildInputData(profile, site, dataArr) {
+    const { numDataAzimuths, numRanges, step, firstRange } = profile;
+    const azStep = 360 / numDataAzimuths;
+    const azimuths = Float64Array.from({ length: numDataAzimuths + 1 }, (_, j) => j * azStep);
+    return {
+        azimuths,
+        ranges: { numRanges, step, firstRange },
+        data: dataArr,
+        radarLat: site.radarLat,
+        radarLng: site.radarLng,
+    };
+}
+
+const APPROACHES = {
+    Legacy:    { name: 'Legacy',    annotate: '15 trig/pt', e2e: calcVertexMapCoords_Legacy,    kernel: kernel_Legacy },
+    Optimized: { name: 'Optimized', annotate: ' 4 trig/pt', e2e: calcVertexMapCoords_Optimized, kernel: kernel_Optimized },
+    Vector:    { name: 'Vector',    annotate: ' 2 trig/pt', e2e: calcVertexMapCoords_Vector,    kernel: kernel_Vector },
+};
+const KEYS = Object.keys(APPROACHES);
+let SINK = 0; // keeps results observable so the engine cannot discard the work
+
+let logBuffer = '';
+let rawExport = null;
+const log = t => { logBuffer += t + '\n'; };
+const pad = (s, w) => String(s).padEnd(w);
+const $ = id => document.getElementById(id);
+const tick = () => new Promise(r => setTimeout(r, 0));
+
+function displayLog() { $('logContent').textContent = logBuffer; $('logSection').classList.add('visible'); }
+function copyLog() { navigator.clipboard.writeText(logBuffer).then(() => alert('Log copied to clipboard!')); }
+function saveBlob(text, name, type) {
+    const url = URL.createObjectURL(new Blob([text], { type }));
+    const a = document.createElement('a'); a.href = url; a.download = name; a.click(); URL.revokeObjectURL(url);
+}
+function downloadLog() { saveBlob(logBuffer, `nexrad-benchmark-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'')}.txt`, 'text/plain'); }
+function downloadJSON() { if (rawExport) saveBlob(JSON.stringify(rawExport), `nexrad-benchmark-raw.json`, 'application/json'); }
+
+function summarize(arr) {
+    const n = arr.length, s = arr.slice().sort((a, b) => a - b);
+    const mean = arr.reduce((a, b) => a + b, 0) / n;
+    const q = p => { const x = (n - 1) * p, lo = Math.floor(x), hi = Math.ceil(x); return s[lo] + (s[hi] - s[lo]) * (x - lo); };
+    const sd = Math.sqrt(arr.reduce((a, x) => a + (x - mean) ** 2, 0) / Math.max(1, n - 1));
+    return { n, mean, sd, median: q(0.5), q1: q(0.25), q3: q(0.75), min: s[0], max: s[n - 1] };
+}
+function maxAbsDiff(a, b) {
+    if (!a || !b || a.length !== b.length) return NaN;
+    let m = 0; for (let i = 0; i < a.length; i++) { const d = Math.abs(a[i] - b[i]); if (d > m) m = d; } return m;
+}
+
+async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function collectEnvironment() {
+    const env = {
+        userAgent: navigator.userAgent, platform: navigator.platform,
+        hardwareConcurrency: navigator.hardwareConcurrency, deviceMemoryGB: navigator.deviceMemory ?? null,
+        devicePixelRatio: window.devicePixelRatio, language: navigator.language,
+        crossOriginIsolated: window.crossOriginIsolated === true,
+        date: new Date().toISOString(), timezoneOffsetMin: new Date().getTimezoneOffset(),
+    };
+    try { env.scriptSha256 = await sha256Hex(document.getElementById('bench-script').textContent); } catch (e) { env.scriptSha256 = 'unavailable'; }
+    // timer granularity as seen by the page
+    let gran = Infinity, last = performance.now();
+    for (let i = 0; i < 200000; i++) { const t = performance.now(); if (t > last) { gran = Math.min(gran, t - last); last = t; } }
+    env.timerGranularityMs = gran === Infinity ? null : gran;
+    return env;
+}
+
+const PROFILES = {
+    superRes: { numDataAzimuths: 720, numRanges: 1832, step: 0.25, firstRange: 2.125, label: 'Super-res 720×1832' },
+    standard: { numDataAzimuths: 360, numRanges: 920, step: 0.50, firstRange: 2.125, label: 'Standard 360×920' },
+};
+const SITE = { radarLat: 35.333, radarLng: -97.278 };
+
+async function runBenchmark() {
+    const btn = $('runBtn'), status = $('status');
+    btn.disabled = true; $('results').classList.remove('visible'); logBuffer = ''; rawExport = null;
+
+    const profileKey = $('profile').value;
+    const warm = parseInt($('warmup').value), meas = parseInt($('measured').value);
+    const label = ($('deviceLabel').value || '').trim();
+    const profile = PROFILES[profileKey];
+    const rng = makePrng(profileKey === 'superRes' ? 0xABCD1234 : 0x5678EF01);
+
+    status.textContent = 'Collecting environment...';
+    const env = await collectEnvironment();
+    const bar = '═'.repeat(75), thin = '─'.repeat(75);
+    log(bar); log(`  NEXRAD Polar Mesh Algorithm Benchmark`); log(bar); log('');
+    log(`Device label: ${label || '(none)'}`);
+    log(`Date: ${env.date}`);
+    log(`User agent (as reported by the browser): ${env.userAgent}`);
+    log('Browser version: (fill in by hand from brave://version or chrome://version)');
+    log(`Platform: ${env.platform}   cores: ${env.hardwareConcurrency}   deviceMemory(GB, capped): ${env.deviceMemoryGB}`);
+    log(`Timer granularity seen by page: ${env.timerGranularityMs} ms   crossOriginIsolated: ${env.crossOriginIsolated}`);
+    log(`Page script SHA-256: ${env.scriptSha256}`);
+    log(`Profile: ${profile.label}   warm-up rounds: ${warm}   measured rounds: ${meas}`);
+    log('Order: each round runs the three approaches in rotating order; each approach is timed end-to-end, then kernel-only;');
+    log('       assembly-only (shared quad assembly on fixed coordinate arrays) is timed once per round.');
+    log('');
+
+    status.textContent = 'Generating test data...'; await tick();
+    const dataArr = genFull(profile.numDataAzimuths, profile.numRanges, rng);
+    const input = buildInputData(profile, SITE, dataArr);
+    const K0 = kernel_Vector(input); // fixed coordinate arrays for the assembly-only phase
+
+    const raw = {}; for (const k of KEYS) raw[k] = { e2e: [], kernel: [] }; raw.assembly = [];
+    const lastE2E = {}, lastKernel = {};
+    const total = warm + meas;
+
+    for (let r = 0; r < total; r++) {
+        status.textContent = `Round ${r + 1} / ${total}${r < warm ? ' (warm-up)' : ''}`;
+        const order = KEYS.map((_, i) => KEYS[(i + r) % KEYS.length]);
+        for (const key of order) {
+            const A = APPROACHES[key];
+            let t0 = performance.now(); const res = A.e2e(input); const te = performance.now() - t0;
+            t0 = performance.now(); const ker = A.kernel(input); const tk = performance.now() - t0;
+            SINK += res.pointCount + ker.mercXY[ker.mercXY.length >> 1] + ker.ecefXYZ[ker.ecefXYZ.length >> 1];
+            if (r >= warm) { raw[key].e2e.push(te); raw[key].kernel.push(tk); }
+            lastE2E[key] = res; lastKernel[key] = ker;
+        }
+        const t0 = performance.now();
+        const a = assembleQuads(K0.numAzimuths, K0.numRanges, K0.limitAz, K0.data, K0.mercXY, K0.ecefXYZ, t0);
+        const ta = performance.now() - t0; SINK += a.pointCount;
+        if (r >= warm) raw.assembly.push(ta);
+        await tick();
+    }
+
+    const S = {}; for (const k of KEYS) S[k] = { e2e: summarize(raw[k].e2e), kernel: summarize(raw[k].kernel) };
+    S.assembly = summarize(raw.assembly);
+    const f = x => x.toFixed(2);
+    const row = (name, s) => pad(name, 26) + pad(f(s.median), 10) + pad(f(s.mean) + ' ± ' + f(s.sd), 18) + pad(f(s.min), 10) + pad(f(s.q1) + '–' + f(s.q3), 16) + f(s.max);
+    const hdr = pad('', 26) + pad('Median', 10) + pad('Mean ± s.d.', 18) + pad('Min', 10) + pad('IQR', 16) + 'Max   (ms)';
+
+    for (const [phase, title] of [['e2e', 'End-to-end (coordinates + quad assembly)'], ['kernel', 'Kernel only (coordinates, no assembly)']]) {
+        log(thin); log('  ' + title); log(thin); log(hdr);
+        for (const k of KEYS) log(row(`${APPROACHES[k].name} (${APPROACHES[k].annotate.trim()})`, S[k][phase]));
+        log('Speedup vs Legacy (ratio of medians): ' + KEYS.map(k => `${APPROACHES[k].name} ${(S.Legacy[phase].median / S[k][phase].median).toFixed(2)}×`).join('   '));
+        log('');
+    }
+    log(thin); log('  Assembly only (shared quad assembly)'); log(thin); log(hdr); log(row('assembleQuads', S.assembly)); log('');
+    log(thin); log('  Decomposition (medians)'); log(thin);
+    for (const k of KEYS) {
+        const e = S[k].e2e.median, ke = S[k].kernel.median, as = S.assembly.median;
+        log(`${pad(APPROACHES[k].name, 14)} e2e ${f(e)}  kernel ${f(ke)}  assembly ${f(as)}  kernel+assembly ${f(ke + as)}  assembly share of e2e ${(100 * as / e).toFixed(0)}%`);
+    }
+    log('');
+
+    log(thin); log('  Numerical agreement (max |Δ|, Float32 outputs of the end-to-end run)'); log(thin);
+    for (let a = 0; a < KEYS.length; a++) for (let b = a + 1; b < KEYS.length; b++) {
+        const A = lastE2E[KEYS[a]], B = lastE2E[KEYS[b]];
+        const merc = maxAbsDiff(A.mercatorPoints, B.mercatorPoints), ecef = maxAbsDiff(A.ecefPoints, B.ecefPoints);
+        log(`${pad(KEYS[a] + ' vs ' + KEYS[b], 28)}merc: ${merc.toExponential(2).padStart(10)}   ecef: ${ecef.toExponential(2).padStart(10)}   (~${(ecef / R_GLOBE * EARTH_RADIUS).toFixed(3)} m)`);
+    }
+    log('Kernel-array agreement (max |Δ| before assembly):');
+    for (let a = 0; a < KEYS.length; a++) for (let b = a + 1; b < KEYS.length; b++) {
+        const A = lastKernel[KEYS[a]], B = lastKernel[KEYS[b]];
+        log(`${pad(KEYS[a] + ' vs ' + KEYS[b], 28)}merc: ${maxAbsDiff(A.mercXY, B.mercXY).toExponential(2).padStart(10)}   ecef: ${maxAbsDiff(A.ecefXYZ, B.ecefXYZ).toExponential(2).padStart(10)}`);
+    }
+    log(`Sink (ignore): ${SINK}`);
+    log('');
+    rawExport = { label, profile: profileKey, warm, meas, env, raw, summary: S };
+    log(thin); log('  RAW SAMPLES (ms, JSON; paste this block back)'); log(thin);
+    log(JSON.stringify({ label, profile: profileKey, warm, meas, scriptSha256: env.scriptSha256, raw }));
+    log(bar);
+
+    displayLog();
+    $('resultsTitle').textContent = `Results: ${profile.label}${label ? ' — ' + label : ''} (median ms)`;
+    const body = $('resultsBody'); body.innerHTML = '';
+    for (const k of KEYS) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><span class="approach-name">${APPROACHES[k].name}</span> <span class="annotate">${APPROACHES[k].annotate}</span></td>
+            <td>${f(S[k].e2e.median)}</td><td>${f(S[k].kernel.median)}</td>
+            <td><span class="speedup">${(S.Legacy.e2e.median / S[k].e2e.median).toFixed(2)}×</span></td>
+            <td><span class="speedup">${(S.Legacy.kernel.median / S[k].kernel.median).toFixed(2)}×</span></td>`;
+        body.appendChild(tr);
+    }
+    $('assemblyNote').textContent = `Shared assembly step: median ${f(S.assembly.median)} ms.`;
+    $('results').classList.add('visible');
+    status.textContent = 'Done. Use "Copy to Clipboard" or "Download as Text", and paste the whole log back.';
+    btn.disabled = false;
+}
+
+</script>
+</body>
+</html>
